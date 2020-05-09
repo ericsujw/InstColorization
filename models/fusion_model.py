@@ -1,5 +1,4 @@
 import os
-import mytimer as time
 
 import torch
 from collections import OrderedDict

@@ -6,7 +6,6 @@ import torch
 import torch.utils.data as Data
 import torchvision.transforms as transforms
 
-from options.train_options import TrainOptions
 from image_util import *
 
 

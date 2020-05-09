@@ -1,8 +1,6 @@
 import numpy as np
 from PIL import Image
 from skimage import color
-from xml.dom import minidom
-from random import sample
 import torch
 
 def read_to_pil(img_path):
