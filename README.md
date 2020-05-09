@@ -1,1 +1,1 @@
-# InstColorization
+# Instance-aware Image Colorization

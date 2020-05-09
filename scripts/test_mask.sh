@@ -1,0 +1,1 @@
+python test_fusion.py --name test_fusion --sample_p 1.0 --model fusion --fineSize 256
