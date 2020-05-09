@@ -1,7 +1,7 @@
 import os
 from os.path import join
 import time
-from options.train_options import TrainOptions
+from options.train_options import TrainOptions, TestOptions
 from models import create_model
 from util.visualizer import Visualizer
 
@@ -21,11 +21,11 @@ multiprocessing.set_start_method('spawn', True)
 torch.backends.cudnn.benchmark = True
 
 if __name__ == '__main__':
-    save_img_path = 'results'
+    opt = TestOptions().parse()
+    save_img_path = opt.results_img_dir
     if os.path.isdir(save_img_path) is False:
         print('Create path: {0}'.format(save_img_path))
         os.makedirs(save_img_path)
-    opt = TrainOptions().parse()
     opt.batch_size = 1
     dataset = Fusion_Testing_Dataset(opt)
     dataset_loader = torch.utils.data.DataLoader(dataset, batch_size=1, num_workers=2)

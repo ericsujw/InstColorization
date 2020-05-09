@@ -12,17 +12,17 @@ from image_util import *
 
 class Fusion_Testing_Dataset(Data.Dataset):
     def __init__(self, opt):
-        self.PRED_BBOX_DIR = 'example_bbox'
-        self.IMAGE_DIR = 'example'
-        self.IMAGE_ID_LIST = [f.split('.')[0] for f in listdir(self.IMAGE_DIR) if isfile(join(self.IMAGE_DIR, f))]
+        self.PRED_BBOX_DIR = '{0}_bbox'.format(opt.test_img_dir)
+        self.IMAGE_DIR = opt.test_img_dir
+        self.IMAGE_ID_LIST = [f for f in listdir(self.IMAGE_DIR) if isfile(join(self.IMAGE_DIR, f))]
 
         self.transforms = transforms.Compose([transforms.Resize((opt.fineSize, opt.fineSize), interpolation=2),
                                               transforms.ToTensor()])
         self.final_size = opt.fineSize
 
     def __getitem__(self, index):
-        pred_info_path = join(self.PRED_BBOX_DIR, self.IMAGE_ID_LIST[index] + '.npz')
-        output_image_path = join(self.IMAGE_DIR, self.IMAGE_ID_LIST[index] + '.jpg')
+        pred_info_path = join(self.PRED_BBOX_DIR, self.IMAGE_ID_LIST[index].split('.')[0] + '.npz')
+        output_image_path = join(self.IMAGE_DIR, self.IMAGE_ID_LIST[index])
         pred_bbox = gen_maskrcnn_bbox_fromPred(pred_info_path, 8)
 
         img_list = []
@@ -42,7 +42,7 @@ class Fusion_Testing_Dataset(Data.Dataset):
             cropped_img_list.append(cropped_img)
         output = {}
         output['full_img'] = torch.stack(img_list)
-        output['file_id'] = self.IMAGE_ID_LIST[index]
+        output['file_id'] = self.IMAGE_ID_LIST[index].split('.')[0]
         if len(pred_bbox) > 0:
             output['cropped_img'] = torch.stack(cropped_img_list)
             output['box_info'] = torch.from_numpy(box_info).type(torch.long)
