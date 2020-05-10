@@ -35,6 +35,9 @@ class TestOptions(BaseOptions):
         BaseOptions.initialize(self, parser)
         parser.add_argument('--test_img_dir', type=str, default='example', help='testing images folder')
         parser.add_argument('--results_img_dir', type=str, default='results', help='save the results image folder')
+        parser.add_argument('--name', type=str, default='test_fusion', help='name of the experiment. It decides where to store samples and models')
+        parser.add_argument('--model', type=str, default='fusion',
+                            help='chooses which model to use. cycle_gan, pix2pix, test')
         parser.add_argument('--display_freq', type=int, default=2000, help='frequency of showing training results on screen')
         parser.add_argument('--display_ncols', type=int, default=5, help='if positive, display all images in a single visdom web panel with certain number of images per row.')
         parser.add_argument('--update_html_freq', type=int, default=10000, help='frequency of saving training results to html')
