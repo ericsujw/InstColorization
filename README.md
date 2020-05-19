@@ -14,9 +14,12 @@ By this repo you can predict a color image from a single grayscale image. To see
 * Please refer to the [env.yml](env.yml) for detail dependencies.
 
 ## Pretrained Model
-1. Pretrained models have already upload to this repo. You can download by `git-lfs`.
-2. To setup the `git-lfs`, please run `apt-get install git-lfs`.
-3. Now you can clone this repo, then the pretrained models would place in [checkpoints](checkpoints).
+1. Download it from [google drive](https://drive.google.com/open?id=1Xb-DKAA9ibCVLqm8teKd1MWk6imjwTBh).
+```
+python download.py
+```
+2. Unzip the `checkpoints.zip`.
+3. Now the pretrained models would place in [checkpoints](checkpoints).
 
 ## Instance Prediction
 Please follow the command below to predict all the bounding boxes fo the images in `example` folder.
