@@ -2,6 +2,7 @@
 This is the pytorch demo code of our CVPR 2020 paper. (Arxiv, Project)
 
 By this repo you can predict a color image from a single grayscale image. To see more details please refer to the paper or project page.
+
 <img src='imgs/teaser.png' width=600>
 
 ## Prerequisites
