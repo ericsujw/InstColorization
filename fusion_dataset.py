@@ -10,7 +10,7 @@ from image_util import *
 
 
 class Fusion_Testing_Dataset(Data.Dataset):
-    def __init__(self, opt):
+    def __init__(self, opt, box_num=8):
         self.PRED_BBOX_DIR = '{0}_bbox'.format(opt.test_img_dir)
         self.IMAGE_DIR = opt.test_img_dir
         self.IMAGE_ID_LIST = [f for f in listdir(self.IMAGE_DIR) if isfile(join(self.IMAGE_DIR, f))]
@@ -18,11 +18,12 @@ class Fusion_Testing_Dataset(Data.Dataset):
         self.transforms = transforms.Compose([transforms.Resize((opt.fineSize, opt.fineSize), interpolation=2),
                                               transforms.ToTensor()])
         self.final_size = opt.fineSize
+        self.box_num = box_num
 
     def __getitem__(self, index):
         pred_info_path = join(self.PRED_BBOX_DIR, self.IMAGE_ID_LIST[index].split('.')[0] + '.npz')
         output_image_path = join(self.IMAGE_DIR, self.IMAGE_ID_LIST[index])
-        pred_bbox = gen_maskrcnn_bbox_fromPred(pred_info_path, 8)
+        pred_bbox = gen_maskrcnn_bbox_fromPred(pred_info_path, self.box_num)
 
         img_list = []
         pil_img = read_to_pil(output_image_path)

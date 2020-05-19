@@ -13,15 +13,20 @@ def read_to_pil(img_path):
         out_img = Image.fromarray(out_img)
     return out_img
 
-def gen_maskrcnn_bbox_fromPred(pred_data_path, box_num_upbound):
+def gen_maskrcnn_bbox_fromPred(pred_data_path, box_num_upbound=-1):
+    '''
+    ## Arguments:
+    - pred_data_path: Detectron2 predict results
+    - box_num_upbound: object bounding boxes number. Default: -1 means use all the instances.
+    '''
     pred_data = np.load(pred_data_path)
     assert 'bbox' in pred_data
     assert 'scores' in pred_data
-    pred_bbox = pred_data['bbox']
-    if pred_bbox.shape[0] > box_num_upbound:
+    pred_bbox = pred_data['bbox'].astype(np.int32)
+    if box_num_upbound > 0 and pred_bbox.shape[0] > box_num_upbound:
         pred_scores = pred_data['scores']
         index_mask = np.argsort(pred_scores, axis=0)[pred_scores.shape[0] - box_num_upbound: pred_scores.shape[0]]
-        pred_bbox = pred_bbox[index_mask].astype(np.int32)
+        pred_bbox = pred_bbox[index_mask]
     # pred_scores = pred_data['scores']
     # index_mask = pred_scores > 0.9
     # pred_bbox = pred_bbox[index_mask].astype(np.int32)
