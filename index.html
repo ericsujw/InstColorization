@@ -1,0 +1,297 @@
+<!DOCTYPE html><!-- This site was created in Webflow. http://www.webflow.com -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>InstColorization</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Webflow" name="generator" />
+    <link
+        href="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/css/erics-ultra-awesome-project-2b2670.webflow.7c345a442.css"
+        rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        WebFont.load({
+            google: {
+                families: [
+                    "Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic",
+                    "Varela Round:400",
+                    "Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic",
+                    "Ubuntu:300,300italic,400,400italic,500,500italic,700,700italic",
+                    "Roboto:300,regular,500"
+                ]
+            }
+        });
+    </script>
+    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif]-->
+    <script type="text/javascript">
+        ! function (o, c) {
+            var n = c.documentElement,
+                t = " w-mod-";
+            n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n
+                .className += t + "touch")
+        }(window, document);
+    </script>
+    <!-- <link href="https://uploads-ssl.webflow.com/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://uploads-ssl.webflow.com/img/webclip.png" rel="apple-touch-icon" /> -->
+</head>
+
+<body>
+    <div class="github_logo w-embed"><a href="https://github.com/ericsujw/InstColorization" class="github-corner"
+        aria-label="View source on Github">
+        <svg width="80" height="80" viewBox="0 0 250 250"
+          style="fill:#333333; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+          <defs>
+            <mask id="octomask">
+              <path fill="white" d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+              <path fill="black"
+                d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+                style="transform-origin: 130px 106px;" class="octo-arm"></path>
+              <path
+                d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+                fill="black" class="octo-body"></path>
+            </mask>
+          </defs>
+          <rect class="filler" width="100%" height="100%" mask="url(#octomask)"></rect>
+        </svg></a>
+      <style>
+        .github-corner:hover .octo-arm {
+          animation: octocat-wave 560ms ease-in-out
+        }
+  
+        @keyframes octocat-wave {
+  
+          0%,
+          100% {
+            transform: rotate(0)
+          }
+  
+          20%,
+          60% {
+            transform: rotate(-25deg)
+          }
+  
+          40%,
+          80% {
+            transform: rotate(10deg)
+          }
+        }
+  
+        @media (max-width:500px) {
+          .github-corner:hover .octo-arm {
+            animation: none
+          }
+  
+          .github-corner .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+          }
+        }
+      </style>
+    </div>
+    <div class="section"></div>
+    <div></div>
+    <div class="container w-container">
+        <h1 class="heading">Instance-aware Image Colorization<br />‍</h1>
+        <div class="columns w-row">
+            <div class="w-col w-col-4"><a href="#" class="link-2">Jheng-Wei Su</a></div>
+            <div class="w-col w-col-4"><a href="https://cgv.cs.nthu.edu.tw/hkchu/" target="_blank"
+                    class="link-2">Hung-Kuo Chu</a></div>
+            <div class="w-col w-col-4"><a href="https://filebox.ece.vt.edu/~jbhuang/" target="_blank"
+                    class="link-2">Jia-Bin Huang</a></div>
+        </div>
+        <div class="columns-3 w-row">
+            <div class="w-col w-col-4">
+                <p class="paragraph-4">National Tsing Hua University</p>
+            </div>
+            <div class="w-col w-col-4">
+                <p class="paragraph-4">National Tsing Hua University</p>
+            </div>
+            <div class="w-col w-col-4">
+                <p class="paragraph-4">Virginia Tech</p>
+            </div>
+        </div>
+        <div class="text-block-2">CVPR 2020</div>
+        <div class="columns-2 w-row">
+            <div class="column w-col w-col-4"><a
+                    href="https://cgv.cs.nthu.edu.tw/download?guid=21043c09-83c7-11ea-9326-0011328fa92e"
+                    class="link-block w-inline-block"><img
+                        src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec55ddd25bead3ff3b1ee6e_paper.png"
+                        width="60"
+                        srcset="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec55ddd25bead3ff3b1ee6e_paper-p-500.png 500w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec55ddd25bead3ff3b1ee6e_paper.png 503w"
+                        sizes="60px" alt="" class="image" /></a></div>
+            <div class="w-col w-col-4"><a href="https://github.com/ericsujw/InstColorization" target="_blank"
+                    class="link-block w-inline-block"><img
+                        src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec4f71beadd7c73668e671d_social-33.svg"
+                        width="60" alt="" class="image" /></a></div>
+            <div class="w-col w-col-4"><a href="https://github.com/ericsujw/InstColorization" target="_blank"
+                    class="link-block w-inline-block"><img
+                        src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec55f8a1e220553498e4b7f_attach.svg"
+                        width="60" alt="" class="image" /></a></div>
+        </div>
+        <div class="columns-4 w-row">
+            <div class="w-col w-col-4">
+                <div class="text-block">Paper</div>
+            </div>
+            <div class="w-col w-col-4">
+                <div class="text-block">&lt;/Code&gt;</div>
+            </div>
+            <div class="w-col w-col-4">
+                <div class="text-block">Test Dataset</div>
+            </div>
+        </div>
+        <div data-delay="8000" data-animation="slide" data-autoplay="1" data-duration="800" data-infinite="1"
+            class="slider-2 w-slider">
+            <div class="mask w-slider-mask">
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results1.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results1.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results2.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results2.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results3.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results3.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results4.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results4.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results5.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results5.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results6.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results6.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results7.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results7.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+                <div class="w-slide">
+                    <div class="video_class mobile w-embed"><video width=100% height=100% autoplay muted controls loop
+                        preload="metadata"
+                        poster="https://cgv.cs.nthu.edu.tw/InstColorization_data/results8.png">
+                        <source src="https://cgv.cs.nthu.edu.tw/InstColorization_data/results8.mp4"
+                          type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                </div>
+            </div>
+            <div class="w-slider-arrow-left">
+                <div class="w-icon-slider-left"></div>
+            </div>
+            <div class="w-slider-arrow-right">
+                <div class="w-icon-slider-right"></div>
+            </div>
+            <div class="w-slider-nav w-round"></div>
+        </div>
+    </div>
+    <div>
+        <div class="w-container">
+            <h2 class="heading-2">Overview Video</h2>
+            <div style="padding-top:56.17021276595745%" id="w-node-bab3867f778d-f18e66ea" class="w-embed-youtubevideo">
+                <iframe
+                    src="https://www.youtube-nocookie.com/embed/WRJFeeaBE_w?rel=0&amp;controls=1&amp;autoplay=0&amp;mute=1&amp;start=0"
+                    frameBorder="0" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto"
+                    allow="autoplay; encrypted-media" allowfullscreen=""></iframe></div>
+        </div>
+    </div>
+    <div>
+        <div class="w-container">
+            <h2 class="heading-2">Abstract</h2>
+            <p class="paragraph-5">Image colorization is inherently an ill-posed problem with multi-modal uncertainty.
+                Previous methods leverage the deep neural network to map input grayscale images to plausible color
+                outputs directly. Although these learning-based methods have shown impressive performance, they usually
+                fail on the input images that contain multiple objects. The leading cause is that existing colorization
+                models always do learning and colorization on the whole image. In the absence of a clear figure-ground
+                separation, these models cannot effectively locate and learn meaningful semantics at object level. In
+                this paper, we propose a novel deep learning framework to achieve instance-aware colorization. Our
+                network architecture leverages an off-the-shelf object detector to obtain cropped object images, which
+                are fed to an instance colorization network to extract object-level features. The full-image features
+                are extracted with a similar network and then fused with object-level features via a fusion module to
+                predict the final colors. Both colorization networks and fusion modules are learned from a large-scale
+                dataset. Experimental results show that our work outperforms existing methods on different quality
+                metrics and achieves state-of-the-art performance on image colorization.</p>
+        </div>
+    </div>
+    <div>
+        <div class="w-container">
+            <h2 class="heading-2">Method</h2><img
+                src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method.png"
+                srcset="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method-p-500.png 500w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method-p-800.png 800w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method-p-1080.png 1080w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method-p-1600.png 1600w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec571dc15ea654d2ec2a62c_method.png 1829w"
+                sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" alt="" class="image-2" />
+            <p class="paragraph-6"><strong>Method overview</strong>. Given a grayscale image as input, our model starts
+                with detecting the object bounding boxes using an off-the-shelf object detection model. We then crop out
+                every detected instance via bounding boxes and use instance colorization network to colorize instances.
+                However, as the instances&#x27;colors may not be compatible with respect to the predicted background
+                colors, we propose to fuse all the instances&#x27; feature maps in every layer with the extracted
+                full-image feature map using the proposed fusion module. We can thus obtain globally consistent
+                colorization results.</p>
+        </div>
+    </div>
+    <div>
+        <div class="w-container">
+            <h2 class="heading-2">Results</h2><img
+                src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results.png"
+                srcset="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results-p-500.png 500w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results-p-800.png 800w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results-p-1080.png 1080w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results-p-1600.png 1600w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results-p-2000.png 2000w, https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/5ec57564fb88c8645e4f9c19_results.png 2154w"
+                sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" alt="" class="image-3" />
+        </div>
+    </div>
+    <div>
+        <div class="w-container">
+            <div class="div-block"></div>
+        </div>
+    </div>
+    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5ec4f71b4958035ab5eba45a" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://uploads-ssl.webflow.com/5ec4f71b4958035ab5eba45a/js/webflow.cdba877fe.js" type="text/javascript"></script>
+  <!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+</body>
+<script>
+    console.log(document.getElementsByClassName("w-webflow-badge"));
+</script>
+</html>
