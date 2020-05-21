@@ -15,13 +15,28 @@ By this repo you can predict a color image from a single grayscale image. To see
 * Pillow/scikit-image
 * Please refer to the [env.yml](env.yml) for detail dependencies.
 
+## Getting Started
+1. Clone this repo:
+```sh
+git clone https://github.com/ericsujw/InstColorization
+cd InstColorization
+```
+2. Install [conda](https://www.anaconda.com/).
+3. Install all the dependencies
+```sh
+conda env create --file env.yml --name instacolorization
+```
+4. Switch to the conda environment
+```sh
+conda activate instacolorization
+```
+
 ## Pretrained Model
 1. Download it from [google drive](https://drive.google.com/open?id=1Xb-DKAA9ibCVLqm8teKd1MWk6imjwTBh).
+```sh
+sh scripts/download_model.sh
 ```
-python download.py
-```
-2. Unzip the `checkpoints.zip`.
-3. Now the pretrained models would place in [checkpoints](checkpoints).
+2. Now the pretrained models would place in [checkpoints](checkpoints).
 
 ## Instance Prediction
 Please follow the command below to predict all the bounding boxes fo the images in `example` folder.
