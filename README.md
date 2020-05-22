@@ -1,7 +1,7 @@
 # Instance-aware Image Colorization
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ericsujw/InstColorization/blob/master/InstColorization.ipynb)
 
-This is the pytorch demo code of our CVPR 2020 paper. (Arxiv, [Project](https://ericsujw.github.io/InstColorization/))
+This is the pytorch demo code of our CVPR 2020 paper. ([arXiv](https://arxiv.org/abs/2005.10825), [Project](https://ericsujw.github.io/InstColorization/))
 
 By this repo you can predict a color image from a single grayscale image. To see more details please refer to the paper or project page.
 
