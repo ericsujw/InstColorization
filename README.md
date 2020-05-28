@@ -19,6 +19,7 @@ Image colorization is inherently an ill-posed problem with multi-modal uncertain
 In IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2020.
 
 ## Prerequisites
+* [CUDA 10.1](https://developer.nvidia.com/cuda-10.1-download-archive-update2)
 * Python3
 * Pytorch >= 1.5
 * Detectron2
@@ -35,11 +36,15 @@ cd InstColorization
 2. Install [conda](https://www.anaconda.com/).
 3. Install all the dependencies
 ```sh
-conda env create --file env.yml --name instacolorization
+conda env create --file env.yml
 ```
 4. Switch to the conda environment
 ```sh
 conda activate instacolorization
+```
+5. Install other dependencies
+```sh
+sh scripts/install.sh
 ```
 
 ## Pretrained Model
