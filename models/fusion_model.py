@@ -106,8 +106,12 @@ class FusionModel(BaseModel):
         GComp_state_dict = torch.load(GComp_path)
 
         self.netGF.load_state_dict(GF_state_dict, strict=False)
-        self.netG.module.load_state_dict(G_state_dict, strict=False)
-        self.netGComp.module.load_state_dict(GComp_state_dict, strict=False)
+        if len(self.gpu_ids) == 0:
+            self.netG.load_state_dict(G_state_dict, strict=False)
+            self.netGComp.load_state_dict(GComp_state_dict, strict=False)
+        else:
+            self.netG.module.load_state_dict(G_state_dict, strict=False)
+            self.netGComp.module.load_state_dict(GComp_state_dict, strict=False)
         self.netGF.eval()
         self.netG.eval()
         self.netGComp.eval()
