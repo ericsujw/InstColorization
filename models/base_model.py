@@ -41,7 +41,6 @@ class BaseModel():
 
         if not self.isTrain or opt.load_model:
             self.load_networks(opt.which_epoch)
-        # self.print_networks(opt.verbose)
 
     # make models eval mode during test time
     def eval(self):

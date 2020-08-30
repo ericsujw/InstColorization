@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.nn import init
 import functools
 import torch.nn.functional as F
+from torch.optim import lr_scheduler
 
 
 def get_norm_layer(norm_type='instance'):
@@ -15,6 +16,21 @@ def get_norm_layer(norm_type='instance'):
     else:
         raise NotImplementedError('normalization layer [%s] is not found' % norm_type)
     return norm_layer
+
+
+def get_scheduler(optimizer, opt):
+    if opt.lr_policy == 'lambda':
+        def lambda_rule(epoch):
+            lr_l = 1.0 - max(0, epoch + 1 + opt.epoch_count - opt.niter) / float(opt.niter_decay + 1)
+            return lr_l
+        scheduler = lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda_rule)
+    elif opt.lr_policy == 'step':
+        scheduler = lr_scheduler.StepLR(optimizer, step_size=opt.lr_decay_iters, gamma=0.1)
+    elif opt.lr_policy == 'plateau':
+        scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.2, threshold=0.01, patience=5)
+    else:
+        return NotImplementedError('learning rate policy [%s] is not implemented', opt.lr_policy)
+    return scheduler
 
 
 def init_weights(net, init_type='xavier', gain=0.02):
@@ -63,6 +79,30 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % which_model_netG)
     return init_net(netG, init_type, gpu_ids)
+
+
+class HuberLoss(nn.Module):
+    def __init__(self, delta=.01):
+        super(HuberLoss, self).__init__()
+        self.delta=delta
+
+    def __call__(self, in0, in1):
+        mask = torch.zeros_like(in0)
+        mann = torch.abs(in0-in1)
+        eucl = .5 * (mann**2)
+        mask[...] = mann < self.delta
+
+        # loss = eucl*mask + self.delta*(mann-.5*self.delta)*(1-mask)
+        loss = eucl*mask/self.delta + (mann-.5*self.delta)*(1-mask)
+        return torch.sum(loss,dim=1,keepdim=True)
+
+
+class L1Loss(nn.Module):
+    def __init__(self):
+        super(L1Loss, self).__init__()
+
+    def __call__(self, in0, in1):
+        return torch.sum(torch.abs(in0-in1),dim=1,keepdim=True)
 
 
 class SIGGRAPHGenerator(nn.Module):

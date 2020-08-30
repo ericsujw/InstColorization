@@ -47,6 +47,17 @@ conda activate instacolorization
 sh scripts/install.sh
 ```
 
+## Dataset Preparation
+### COCOStuff
+1. Download and unzip the COCOStuff training set:
+```sh
+sh scripts/prepare_cocostuff.sh
+```
+2. Now the COCOStuff train set would place in [train_data](train_data).
+
+### Your own Dataset
+1. If you want to train on your dataset, you should change the dataset path in [scripts/prepare_train_box.sh's L1](scripts/prepare_train_box.sh#L1) and in [scripts/train.sh's L1](scripts/train.sh#L1).
+
 ## Pretrained Model
 1. Download it from [google drive](https://drive.google.com/open?id=1Xb-DKAA9ibCVLqm8teKd1MWk6imjwTBh).
 ```sh
@@ -55,23 +66,33 @@ sh scripts/download_model.sh
 2. Now the pretrained models would place in [checkpoints](checkpoints).
 
 ## Instance Prediction
-Please follow the command below to predict all the bounding boxes fo the images in `example` folder.
+Please follow the command below to predict all the bounding boxes fo the images in `${DATASET_DIR}` folder.
+```sh
+sh scripts/prepare_train_box.sh
 ```
-python inference_bbox.py --test_img_dir example
-```
-All the prediction results would save in `example_bbox` folder.
+All the prediction results would save in `${DATASET_DIR}_bbox` folder.
 
-## Colorize Images
-Please follow the command below to colorize all the images in `example` foler.
+## Training the Instance-aware Image Colorization model
+Simply run the following command, then the training pipeline would get start.
+```sh
+sh scripts/train.sh
 ```
-python test_fusion.py --name test_fusion --sample_p 1.0 --model fusion --fineSize 256 --test_img_dir example --results_img_dir results
-```
-All the colorized results would save in `results` folder.
+To view training results and loss plots, run `visdom -port 8098` and click the URL http://localhost:8098.
 
-* Note: all the images would convert into L channel to colorize in [test_fusion.py's L51](test_fusion.py#L51)
+This is a 3 stage training process.
+1. We would start to train our full image colorization branch based on the [siggraph_retrained's pretrained weight](https://github.com/richzhang/colorization-pytorch).
+2. We would use the full image colorization branch's weight as our instance colorization branch's pretrained weight.
+3. Finally, we would train the fusion module.
 
-## Training the Model
-Please follow this [tutorial](README_TRAIN.md) to train the colorization model.
+## Testing the Instance-aware Image Colorization model
+1. Our model's weight would place in [checkpoints/coco_mask](checkpoints/coco_mask).
+2. Change the checkpoint's path in [test_fusion.py's L38](test_fusion.py#L38) from `coco_finetuned_mask_256_ffs` to `coco_mask`
+3. Please follow the command below to colorize all the images in `example` foler based on the weight placed in `coco_mask`.
+
+    ```
+    python test_fusion.py --name test_fusion --sample_p 1.0 --model fusion --fineSize 256 --test_img_dir example --results_img_dir results
+    ```
+    All the colorized results would save in `results` folder.
 
 ## License
 This work is licensed under MIT License. See [LICENSE](LICENSE) for details. 

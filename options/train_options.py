@@ -4,6 +4,10 @@ from .base_options import BaseOptions
 class TrainOptions(BaseOptions):
     def initialize(self, parser):
         BaseOptions.initialize(self, parser)
+        parser.add_argument('--stage', type=str, default='full', help='only full, instance or fusion')
+        parser.add_argument('--train_img_dir', type=str, default='train_data/train2017', help='training images folder')
+        parser.add_argument('--model', type=str, default='train', help='only train_model need to be used')
+        parser.add_argument('--name', type=str, default='coco_mask', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--display_freq', type=int, default=2000, help='frequency of showing training results on screen')
         parser.add_argument('--display_ncols', type=int, default=5, help='if positive, display all images in a single visdom web panel with certain number of images per row.')
         parser.add_argument('--update_html_freq', type=int, default=10000, help='frequency of saving training results to html')

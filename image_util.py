@@ -3,6 +3,19 @@ from PIL import Image
 from skimage import color
 import torch
 
+def gen_gray_color_pil(color_img_path):
+    '''
+    return: RGB and GRAY pillow image object
+    '''
+    rgb_img = Image.open(color_img_path)
+    if len(np.asarray(rgb_img).shape) == 2:
+        rgb_img = np.stack([np.asarray(rgb_img), np.asarray(rgb_img), np.asarray(rgb_img)], 2)
+        rgb_img = Image.fromarray(rgb_img)
+    gray_img = np.round(color.rgb2gray(np.asarray(rgb_img)) * 255.0).astype(np.uint8)
+    gray_img = np.stack([gray_img, gray_img, gray_img], -1)
+    gray_img = Image.fromarray(gray_img)
+    return rgb_img, gray_img
+
 def read_to_pil(img_path):
     '''
     return: pillow image object HxWx3
