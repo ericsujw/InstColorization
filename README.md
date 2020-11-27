@@ -89,3 +89,6 @@ If you find our code/models useful, please consider citing our paper:
 
 ## Acknowledgments
 Our code borrows heavily from the amazing [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
+
+
+ENet: A Deep Neural Network Architecture for Real-Time Semantic Segmentation
