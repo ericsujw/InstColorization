@@ -94,20 +94,32 @@ class FusionModel(BaseModel):
     def setup_to_test(self, fusion_weight_path):
         GF_path = 'checkpoints/{0}/latest_net_GF.pth'.format(fusion_weight_path)
         print('load Fusion model from %s' % GF_path)
-        GF_state_dict = torch.load(GF_path)
+        GF_state_dict = torch.load(GF_path, map_location=torch.device('cpu'))
         
         # G_path = 'checkpoints/coco_finetuned_mask_256/latest_net_G.pth' # fine tuned on cocostuff
         G_path = 'checkpoints/{0}/latest_net_G.pth'.format(fusion_weight_path)
-        G_state_dict = torch.load(G_path)
+        G_state_dict = torch.load(G_path,  map_location=torch.device('cpu'))
 
         # GComp_path = 'checkpoints/siggraph_retrained/latest_net_G.pth' # original net
         # GComp_path = 'checkpoints/coco_finetuned_mask_256/latest_net_GComp.pth' # fine tuned on cocostuff
         GComp_path = 'checkpoints/{0}/latest_net_GComp.pth'.format(fusion_weight_path)
-        GComp_state_dict = torch.load(GComp_path)
+        GComp_state_dict = torch.load(GComp_path,  map_location=torch.device('cpu'))
 
-        self.netGF.load_state_dict(GF_state_dict, strict=False)
-        self.netG.module.load_state_dict(G_state_dict, strict=False)
-        self.netGComp.module.load_state_dict(GComp_state_dict, strict=False)
+        if (len(self.gpu_ids) > 0):
+            self.netGF.load_state_dict(GF_state_dict, strict=False)
+            self.netG.module.load_state_dict(G_state_dict, strict=False)
+            self.netGComp.module.load_state_dict(GComp_state_dict, strict=False)
+        else:
+            # self.netGF 
+            target_state_dict = self.netGF.state_dict()
+            for n, p in GF_state_dict.items():
+                n = n.replace('module.', '')
+                if n in target_state_dict.keys():
+                    target_state_dict[n].copy_(p)
+                else:
+                    raise KeyError(n)
+            self.netG.load_state_dict(G_state_dict, strict=False)
+            self.netGComp.load_state_dict(GComp_state_dict, strict=False)
         self.netGF.eval()
         self.netG.eval()
         self.netGComp.eval()
