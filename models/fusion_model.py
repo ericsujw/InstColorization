@@ -1,6 +1,7 @@
 import os
 
 import torch
+from torch import nn
 from collections import OrderedDict
 from util.image_pool import ImagePool
 from util import util
@@ -29,21 +30,24 @@ class FusionModel(BaseModel):
 
         # load/define networks
         num_in = opt.input_nc + opt.output_nc + 1
-        
+
         self.netG = networks.define_G(num_in, opt.output_nc, opt.ngf,
                                       'instance', opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids,
                                       use_tanh=True, classification=False)
         self.netG.eval()
-        
+        self.netG = nn.DataParallel(self.netG)
+
         self.netGF = networks.define_G(num_in, opt.output_nc, opt.ngf,
                                       'fusion', opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids,
                                       use_tanh=True, classification=False)
         self.netGF.eval()
+        self.netGF = nn.DataParallel(self.netGF)
 
         self.netGComp = networks.define_G(num_in, opt.output_nc, opt.ngf,
                                       'siggraph', opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids,
                                       use_tanh=True, classification=opt.classification)
         self.netGComp.eval()
+        self.netGComp = nn.DataParallel(self.netGComp)
 
 
     def set_input(self, input):
@@ -51,12 +55,12 @@ class FusionModel(BaseModel):
         self.real_A = input['A' if AtoB else 'B'].to(self.device)
         self.real_B = input['B' if AtoB else 'A'].to(self.device)
         self.hint_B = input['hint_B'].to(self.device)
-        
+
         self.mask_B = input['mask_B'].to(self.device)
         self.mask_B_nc = self.mask_B + self.opt.mask_cent
 
         self.real_B_enc = util.encode_ab_ind(self.real_B[:, :, ::4, ::4], self.opt)
-    
+
     def set_fusion_input(self, input, box_info):
         AtoB = self.opt.which_direction == 'AtoB'
         self.full_real_A = input['A' if AtoB else 'B'].to(self.device)
@@ -85,25 +89,28 @@ class FusionModel(BaseModel):
     def forward(self):
         (_, feature_map) = self.netG(self.real_A, self.hint_B, self.mask_B)
         self.fake_B_reg = self.netGF(self.full_real_A, self.full_hint_B, self.full_mask_B, feature_map, self.box_info_list)
-        
-    def save_current_imgs(self, path):
-        out_img = torch.clamp(util.lab2rgb(torch.cat((self.full_real_A.type(torch.cuda.FloatTensor), self.fake_B_reg.type(torch.cuda.FloatTensor)), dim=1), self.opt), 0.0, 1.0)
+
+    def save_current_imgs(self, path, is_cuda=True):
+        if is_cuda:
+            out_img = torch.clamp(util.lab2rgb(torch.cat((self.full_real_A.type(torch.cuda.FloatTensor), self.fake_B_reg.type(torch.cuda.FloatTensor)), dim=1), self.opt), 0.0, 1.0)
+        else:
+            out_img = torch.clamp(util.lab2rgb(torch.cat((self.full_real_A.type(torch.FloatTensor), self.fake_B_reg.type(torch.FloatTensor)), dim=1), self.opt), 0.0, 1.0)
         out_img = np.transpose(out_img.cpu().data.numpy()[0], (1, 2, 0))
         io.imsave(path, img_as_ubyte(out_img))
 
-    def setup_to_test(self, fusion_weight_path):
+    def setup_to_test(self, fusion_weight_path, map_location):
         GF_path = 'checkpoints/{0}/latest_net_GF.pth'.format(fusion_weight_path)
         print('load Fusion model from %s' % GF_path)
-        GF_state_dict = torch.load(GF_path)
-        
+        GF_state_dict = torch.load(GF_path, map_location=map_location)
+
         # G_path = 'checkpoints/coco_finetuned_mask_256/latest_net_G.pth' # fine tuned on cocostuff
         G_path = 'checkpoints/{0}/latest_net_G.pth'.format(fusion_weight_path)
-        G_state_dict = torch.load(G_path)
+        G_state_dict = torch.load(G_path, map_location=map_location)
 
         # GComp_path = 'checkpoints/siggraph_retrained/latest_net_G.pth' # original net
         # GComp_path = 'checkpoints/coco_finetuned_mask_256/latest_net_GComp.pth' # fine tuned on cocostuff
         GComp_path = 'checkpoints/{0}/latest_net_GComp.pth'.format(fusion_weight_path)
-        GComp_state_dict = torch.load(GComp_path)
+        GComp_state_dict = torch.load(GComp_path, map_location=map_location)
 
         self.netGF.load_state_dict(GF_state_dict, strict=False)
         self.netG.module.load_state_dict(G_state_dict, strict=False)
