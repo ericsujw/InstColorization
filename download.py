@@ -4,6 +4,7 @@ from os.path import join, isdir
 import os
 from argparse import ArgumentParser
 
+
 def download_file_from_google_drive(id, destination):
     URL = "https://docs.google.com/uc?export=download"
 
@@ -45,6 +46,7 @@ if args.mode == 'pretrained-weight':
     destination = 'checkpoints.zip'
     download_file_from_google_drive(file_id, destination)
 
+
 elif args.mode == 'cocostuff':
     print('download cocostuff training dataset')
     url = "http://images.cocodataset.org/zips/train2017.zip"
@@ -52,5 +54,21 @@ elif args.mode == 'cocostuff':
     if isdir(join(args.dataset_dir, "cocostuff")) is False:
         os.makedirs(join(args.dataset_dir, "cocostuff"))
     save_response_content(response, join(args.dataset_dir, "cocostuff", "train.zip"))
+
+elif args.mode == 'coco-weights':
+    os.environ["FVCORE_CACHE"] = "checkpoints/fvcore_cache"
+
+    from detectron2 import model_zoo
+    from detectron2.config import get_cfg
+    from detectron2.engine import DefaultPredictor
+
+    # Download coco weights
+    cfg = get_cfg()
+    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml"))
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml")
+    cfg.MODEL.DEVICE = "cpu"
+    predictor = DefaultPredictor(cfg)
+
 else:
     print('Error Mode!')
