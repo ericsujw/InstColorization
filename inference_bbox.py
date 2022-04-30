@@ -19,10 +19,16 @@ from detectron2.config import get_cfg
 import torch
 from tqdm import tqdm
 
+import pdb
+
 cfg = get_cfg()
 cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml"))
+
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x.yaml")
+# https://dl.fbaipublicfiles.com/detectron2/COCO-InstanceSegmentation/mask_rcnn_X_101_32x8d_FPN_3x/139653917/model_final_2d9806.pkl
+cfg.MODEL.WEIGHTS = "checkpoints/model_final_2d9806.pkl"
+
 predictor = DefaultPredictor(cfg)
 
 parser = ArgumentParser()
@@ -42,6 +48,9 @@ for image_path in tqdm(image_list):
     lab_image = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
     l_channel, a_channel, b_channel = cv2.split(lab_image)
     l_stack = np.stack([l_channel, l_channel, l_channel], axis=2)
+    # l_channel.shape -- (320, 480)
+    # l_stack.shape -- (320, 480, 3)
+
     outputs = predictor(l_stack)
     save_path = join(output_npz_dir, image_path.split('.')[0])
     pred_bbox = outputs["instances"].pred_boxes.to(torch.device('cpu')).tensor.numpy()
@@ -50,4 +59,7 @@ for image_path in tqdm(image_list):
         print('delete {0}'.format(image_path))
         os.remove(join(input_dir, image_path))
         continue
+
+    # (Pdb) pred_bbox.shape -- (10, 4)
+    # (Pdb) pred_scores.shape -- (10,)
     np.savez(save_path, bbox = pred_bbox, scores = pred_scores)

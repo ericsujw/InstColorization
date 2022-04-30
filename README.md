@@ -57,6 +57,7 @@ sh scripts/download_model.sh
 ## Instance Prediction
 Please follow the command below to predict all the bounding boxes fo the images in `example` folder.
 ```
+./bbox.sh or
 python inference_bbox.py --test_img_dir example
 ```
 All the prediction results would save in `example_bbox` folder.
@@ -64,6 +65,7 @@ All the prediction results would save in `example_bbox` folder.
 ## Colorize Images
 Please follow the command below to colorize all the images in `example` foler.
 ```
+./color.sh or
 python test_fusion.py --name test_fusion --sample_p 1.0 --model fusion --fineSize 256 --test_img_dir example --results_img_dir results
 ```
 All the colorized results would save in `results` folder.
@@ -89,3 +91,6 @@ If you find our code/models useful, please consider citing our paper:
 
 ## Acknowledgments
 Our code borrows heavily from the amazing [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
+
+
+ENet: A Deep Neural Network Architecture for Real-Time Semantic Segmentation
