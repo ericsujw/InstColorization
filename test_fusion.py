@@ -16,6 +16,9 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import numpy as np
 import multiprocessing
+
+import pdb
+
 multiprocessing.set_start_method('spawn', True)
 
 torch.backends.cudnn.benchmark = True
@@ -36,6 +39,7 @@ if __name__ == '__main__':
     model = create_model(opt)
     # model.setup_to_test('coco_finetuned_mask_256')
     model.setup_to_test('coco_finetuned_mask_256_ffs')
+    model.eval()
 
     count_empty = 0
     for data_raw in tqdm(dataset_loader, dynamic_ncols=True):
@@ -53,12 +57,18 @@ if __name__ == '__main__':
             box_info_8x = data_raw['box_info_8x'][0]
             cropped_data = util.get_colorization_data(data_raw['cropped_img'], opt, ab_thresh=0, p=opt.sample_p)
             full_img_data = util.get_colorization_data(data_raw['full_img'], opt, ab_thresh=0, p=opt.sample_p)
+
             model.set_input(cropped_data)
             model.set_fusion_input(full_img_data, [box_info, box_info_2x, box_info_4x, box_info_8x])
-            model.forward()
+
+            with torch.no_grad():
+                model.forward()
         else:
             count_empty += 1
             full_img_data = util.get_colorization_data(data_raw['full_img'], opt, ab_thresh=0, p=opt.sample_p)
-            model.set_forward_without_box(full_img_data)
+
+            with torch.no_grad():
+                model.set_forward_without_box(full_img_data)
+
         model.save_current_imgs(join(save_img_path, data_raw['file_id'][0] + '.png'))
     print('{0} images without bounding boxes'.format(count_empty))
